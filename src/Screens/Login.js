@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, {useEffect, useState} from "react";
+=======
+import React, { useState } from "react";
+>>>>>>> 4ff1d20c11dccba28d4ea9c878a38d46c878de83
 import {
   View,
   Text,
@@ -13,6 +17,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const windowWidth = Dimensions.get("window").width;
 
 export default function Login({ navigation }) {
+<<<<<<< HEAD
 
 
   const [Email, setEmail] = useState("");
@@ -50,11 +55,28 @@ export default function Login({ navigation }) {
     }
   };
   
+=======
+  const [Email, setEmail] = useState('');
+  const [Password, setPassword] = useState('');
+  const [Error, setError] = useState('');
+
+  const verificar = () => {
+    if (!Email || !Password) {
+      setError("Está faltando preencher a senha ou o email");
+    } else {
+      setError(''); // Clear any previous errors
+      navigation.navigate("Inicio");
+    }
+  };
+>>>>>>> 4ff1d20c11dccba28d4ea9c878a38d46c878de83
 
   return (
  
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
+
+      {/* Displaying error message if exists */}
+      {Error ? <Text style={styles.error}>{Error}</Text> : null}
 
       <View style={styles.inputContainer}>
         <Text>Email</Text>
@@ -71,15 +93,24 @@ export default function Login({ navigation }) {
           style={styles.input}
           placeholder="Digite sua senha"
           secureTextEntry
+<<<<<<< HEAD
           value={Senha}
           onChangeText={setSenha}
+=======
+          value={Password}
+          onChangeText={setPassword}
+>>>>>>> 4ff1d20c11dccba28d4ea9c878a38d46c878de83
         />
       </View>
 
       <View style={styles.buttonContainer}>
         <Button
           title="Login"
+<<<<<<< HEAD
           onPress={processarLogin}
+=======
+          onPress={verificar}
+>>>>>>> 4ff1d20c11dccba28d4ea9c878a38d46c878de83
         />
       </View>
 
@@ -127,5 +158,9 @@ const styles = StyleSheet.create({
     margin: 5,
     width: windowWidth * 0.5,
     borderRadius: 10,
+  },
+  error: {
+    color: "red",
+    marginBottom: 10,
   },
 });
