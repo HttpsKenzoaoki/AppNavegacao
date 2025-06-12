@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
   View,
   Text,
@@ -6,12 +6,53 @@ import {
   StyleSheet,
   Dimensions,
   TextInput,
+  Alert,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const windowWidth = Dimensions.get("window").width;
 
 export default function Login({ navigation }) {
+
+
+  const [Email, setEmail] = useState("");
+  const [Senha, setSenha] = useState("");
+
+  useEffect(() => {
+    const verificarLogin = async() => {
+      const usuarioLogado = await AsyncStorage.getItem('UsuarioLogado');
+      if(usuarioLogado){
+        navigation.replace("Inicio");
+      }
+    };
+
+    verificarLogin();
+  }, []);
+
+  const processarLogin = async () => {
+    try {
+      const DadosSalvos = await AsyncStorage.getItem('UsuarioLogado');
+  
+      if (!DadosSalvos) {
+        Alert.alert("Nenhum usuário cadastrado");
+        return;
+      }
+  
+      const {email, senha} = JSON.parse(DadosSalvos);
+  
+      if (Email === email && Senha === senha) {
+        navigation.replace("Inicio");
+      } else {
+        Alert.alert("Email ou Senha incorretos");
+      }
+    } catch (error) {
+      Alert.alert("Falha ao verificar login");
+    }
+  };
+  
+
   return (
+ 
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
 
@@ -21,6 +62,8 @@ export default function Login({ navigation }) {
           style={styles.input}
           placeholder="Digite seu email"
           keyboardType="email-address"
+          value={Email}
+          onChangeText={setEmail}
         />
 
         <Text>Senha</Text>
@@ -28,13 +71,15 @@ export default function Login({ navigation }) {
           style={styles.input}
           placeholder="Digite sua senha"
           secureTextEntry
+          value={Senha}
+          onChangeText={setSenha}
         />
       </View>
 
       <View style={styles.buttonContainer}>
         <Button
           title="Login"
-          onPress={() => navigation.navigate("Inicio")}
+          onPress={processarLogin}
         />
       </View>
 

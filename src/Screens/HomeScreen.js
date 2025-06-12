@@ -1,9 +1,19 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, Dimensions } from 'react-native';
-
+import { View, Text, Button, StyleSheet, Dimensions, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const windowWidth = Dimensions.get('window').width;
 
 export default function HomeScreen({ navigation }) {
+
+  const DeslogarUser = async() =>{
+    try{
+      await AsyncStorage.removeItem('UsuarioLogado');
+      navigation.replace('Login');
+    } catch(error){
+      Alert.alert("Erro ao deslogar");
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Inicio</Text>
@@ -22,8 +32,8 @@ export default function HomeScreen({ navigation }) {
 
       <View style={styles.buttonContainer}>
         <Button
-          title="Voltar ao Login"
-          onPress={() => navigation.navigate('Login')}
+          title="Deslogar"
+          onPress={DeslogarUser}
         />
       </View>
 
